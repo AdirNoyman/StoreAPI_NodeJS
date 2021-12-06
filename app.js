@@ -1,19 +1,21 @@
 // Imports /////////////////////////////////////////////////////
 // Enables us to get the data we need from the enviorment variable
 require('dotenv').config();
-// async errors
+// This package catching error thrown and wraps our controllers with try-catch blocks
+require('express-async-errors');
 
 const express = require('express');
 const app = express();
 // import DB connection
 const connectDB = require('./db/connect');
-
+const productsRouter = require('./routes/products');
 // Middleware /////////////////////////////////////////////////////
 const notFoundMiddleware = require('./middleware/not-found');
 const errorMiddleware = require('./middleware/error-handler');
 app.use(express.json());
 
 // Routes /////////////////////////////////////////////////////
+// Home Route
 app.get('/', (req, res) => {
   res
     .status(200)
@@ -21,6 +23,8 @@ app.get('/', (req, res) => {
       '<h1>Welcome to my store API 🤓</h1><a href="/api/v1/products">Products Route</a>'
     );
 });
+
+app.use('/api/v1/products', productsRouter);
 
 // Products Route
 
